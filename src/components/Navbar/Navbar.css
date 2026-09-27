@@ -6,7 +6,7 @@
 .navbar__links button{font:500 1.05rem var(--mono);letter-spacing:.08em;color:var(--muted);transition:color .3s var(--ease)}
 .navbar__links button:hover{color:var(--text)}
 .navbar__availability{justify-self:end;font:1rem var(--mono);color:var(--muted);letter-spacing:.04em;display:flex;align-items:center;gap:.8rem;white-space:nowrap}
-.navbar__availability i{width:.55rem;height:.55rem;border-radius:50%;background:var(--accent);box-shadow:0 0 .9rem rgba(142,168,255,.45)}
+.navbar__availability i{width:.55rem;height:.55rem;border-radius:50%;background:var(--accent);box-shadow:0 0 .9rem rgba(21,94,239,.45)}
 .navbar__menu{width:4.2rem;height:4.2rem;position:relative;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);transition:background .3s ease,transform .3s ease}
 .navbar__menu:hover{background:rgba(255,255,255,.13);transform:scale(1.04)}
 .navbar__menu span{position:absolute;left:1.15rem;right:1.15rem;height:1px;background:var(--text);transition:transform .45s cubic-bezier(.77,0,.18,1),top .45s cubic-bezier(.77,0,.18,1)}
@@ -14,7 +14,7 @@
 .navbar.is-open .navbar__menu span:first-child{top:1.9rem;transform:rotate(45deg)}
 .navbar.is-open .navbar__menu span:last-child{top:1.9rem;transform:rotate(-45deg)}
 .navbar__menu-panel{position:fixed;inset:0;z-index:90;visibility:hidden;opacity:0;background:#050505;color:var(--text);clip-path:circle(0% at calc(100% - 4rem) 3.4rem);overflow:hidden}
-.navbar__menu-panel:before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 18% 30%,rgba(142,168,255,.11),transparent 24%),radial-gradient(circle at 82% 65%,rgba(142,168,255,.055),transparent 28%);animation:menuGradient 14s ease-in-out infinite alternate}
+.navbar__menu-panel:before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 18% 30%,rgba(21,94,239,.11),transparent 24%),radial-gradient(circle at 82% 65%,rgba(21,94,239,.055),transparent 28%);animation:menuGradient 14s ease-in-out infinite alternate}
 .navbar__menu-content{position:relative;height:100%;padding:13rem clamp(2rem,6vw,9rem) 4rem;display:flex;flex-direction:column}
 .navbar__menu-kicker{display:flex;justify-content:space-between;font:1.05rem var(--mono);letter-spacing:.08em;color:var(--muted)}
 .navbar__menu-links{margin:auto 0;display:flex;flex-direction:column;align-items:flex-start}
