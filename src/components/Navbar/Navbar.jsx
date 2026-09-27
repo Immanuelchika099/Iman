@@ -24,22 +24,24 @@ function Navbar(){
     return()=>tl.kill()
   },[open]);
   function goTo(id){setOpen(false);requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"}))}
-  return <header ref={nav} className={open?"navbar is-open":"navbar"}>
+  return <><header ref={nav} className={open?"navbar is-open":"navbar"}>
     <div className="navbar__pill">
       <button className="navbar__brand" onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>IMAN</button>
       <nav className="navbar__links">{links.map(([num,label,id])=><button key={id} onClick={()=>goTo(id)}>{label}</button>)}</nav>
       <div className="navbar__availability"><i/> AVAILABLE FOR SELECT PROJECTS</div>
       <button className="navbar__menu" onClick={()=>setOpen(v=>!v)} aria-label={open?"Close menu":"Open menu"} aria-expanded={open}><span/><span/></button>
     </div>
-    <div ref={menuPanel} className="navbar__menu-panel" aria-hidden={!open}>
-      <div className="navbar__menu-content">
-        <div className="navbar__menu-kicker"><span>IMAN / DIGITAL PRACTICE</span><span>MENU</span></div>
-        <nav className="navbar__menu-links">
-          {links.map(([num,label,id],i)=><button key={id} ref={el=>menuItems.current[i]=el} onClick={()=>goTo(id)}><span>{num}</span><strong>{label}</strong><em>↗</em></button>)}
-        </nav>
-        <div ref={menuMeta} className="navbar__menu-meta"><span>SOFTWARE ENGINEER · CREATIVE DEVELOPER · AI INTEGRATION</span><span>BUILD SOMETHING THAT MATTERS.</span></div>
-      </div>
-    </div>
+
   </header>
+  <div ref={menuPanel} className="navbar__menu-panel" aria-hidden={!open}>
+    <div className="navbar__menu-content">
+      <div className="navbar__menu-kicker"><span>IMAN / DIGITAL PRACTICE</span><span>MENU</span></div>
+      <nav className="navbar__menu-links">
+        {links.map(([num,label,id],i)=><button key={id} ref={el=>menuItems.current[i]=el} onClick={()=>goTo(id)}><span>{num}</span><strong>{label}</strong><em>↗</em></button>)}
+      </nav>
+      <div ref={menuMeta} className="navbar__menu-meta"><span>SOFTWARE ENGINEER · CREATIVE DEVELOPER · AI INTEGRATION</span><span>BUILD SOMETHING THAT MATTERS.</span></div>
+    </div>
+  </div>
+  </>
 }
 export default Navbar;
