@@ -18,6 +18,7 @@ function App(){
   const [path,setPath]=useState(window.location.pathname);
   const [loading,setLoading]=useState(true);
   useEffect(()=>{const onPop=()=>setPath(window.location.pathname);window.addEventListener("popstate",onPop);return()=>window.removeEventListener("popstate",onPop)},[]);
+  useEffect(()=>{window.scrollTo({top:0,left:0,behavior:"auto"})},[path]);
   useEffect(()=>{
     document.documentElement.classList.toggle("is-loading",loading);
     const fallback=window.setTimeout(()=>setLoading(false),2200);
