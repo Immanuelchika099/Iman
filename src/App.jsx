@@ -9,6 +9,7 @@ import About from "./components/About/About";
 import Services from "./components/Services/Services";
 import Tech from "./components/Tech/Tech";
 import Availability from "./components/Availability/Availability";
+import ScrollMarquee from "./components/ScrollMarquee/ScrollMarquee";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import "./App.css";
@@ -22,7 +23,7 @@ function App(){
   return <div className="site-shell">
     {loading&&<Preloader onComplete={()=>setLoading(false)}/>}
     <Navbar/>
-    <main><Hero/><Marquee/><Intersection/><SelectedWork/><About/><Services/><Tech/><Availability/><Contact/></main>
+    <main><Hero/><Marquee/><Intersection/><SelectedWork/><About/><Services/><Tech/><Availability/><ScrollMarquee/><Contact/></main>
     <Footer/>
   </div>
 }
