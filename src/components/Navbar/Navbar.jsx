@@ -23,7 +23,7 @@ function Navbar(){
       .to(menuPanel.current,{clipPath:"circle(0% at calc(100% - 4rem) 3.4rem)",duration:.65,ease:"power4.inOut"},"-=.12");
     return()=>tl.kill()
   },[open]);
-  function goTo(id){setOpen(false);requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"}))}
+  function goTo(id){setOpen(false);if(id==="about"){window.history.pushState({}, "", "/about");window.scrollTo(0,0);window.dispatchEvent(new PopStateEvent("popstate"));return}requestAnimationFrame(()=>document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"}))}
   return <><header ref={nav} className={open?"navbar is-open":"navbar"}>
     <div className="navbar__pill">
       <button className="navbar__brand" onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>IMAN</button>
