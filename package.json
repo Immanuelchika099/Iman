@@ -15,7 +15,8 @@
     "@react-three/fiber": "^9.4.0",
     "@shadergradient/react": "^2.4.20",
     "camera-controls": "^3.1.2",
-    "three": "^0.181.2"
+    "three": "^0.181.2",
+    "three-stdlib": "^2.36.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.1.1",
