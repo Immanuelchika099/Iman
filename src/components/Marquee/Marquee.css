@@ -1,0 +1,1 @@
+.marquee{overflow:hidden;border-block:1px solid var(--line);padding:1.8rem 0;white-space:nowrap}.marquee__track{display:flex;width:max-content;align-items:center;gap:3rem;font:500 1.35rem var(--mono);letter-spacing:.08em}.marquee__track b{font-size:1.5rem;color:var(--accent);font-weight:400}
