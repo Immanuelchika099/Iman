@@ -7,7 +7,7 @@ import './ColorBends.css';
 const MAX_COLORS = 8;
 
 const frag = \`
-#define MAX_COLORS \${MAX_COLORS}
+#define MAX_COLORS ${MAX_COLORS}
 uniform vec2 uCanvas;
 uniform float uTime;
 uniform float uSpeed;
@@ -315,5 +315,5 @@ export default function ColorBends({
     };
   }, []);
 
-  return <div ref={containerRef} className={\`color-bends-container \${className}\`} style={style} />;
+  return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} />;
 }
