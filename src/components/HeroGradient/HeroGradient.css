@@ -1,5 +1,40 @@
-.hero-gradient{position:absolute;inset:0;z-index:0;overflow:hidden;background:#000;pointer-events:none}
-.hero-gradient__bends{position:absolute!important;inset:0;width:100%!important;height:100%!important}
-.hero-gradient__veil{position:absolute;z-index:2;pointer-events:none;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.52) 72%,#000);mix-blend-mode:normal}
-@media(max-width:70rem){.hero-gradient__veil{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.62) 70%,#000)}}
-@media(prefers-reduced-motion:reduce){.hero-gradient{display:none}}
+.hero-gradient{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  background:#000;
+  pointer-events:none;
+}
+
+.hero-gradient__bends{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  z-index:1;
+}
+
+.hero-gradient__veil{
+  position:absolute;
+  z-index:2;
+  pointer-events:none;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,0.02) 0%,
+    rgba(0,0,0,0.12) 58%,
+    rgba(0,0,0,0.58) 100%
+  );
+}
+
+@media(max-width:70rem){
+  .hero-gradient__veil{
+    background:linear-gradient(
+      180deg,
+      rgba(0,0,0,0.04) 0%,
+      rgba(0,0,0,0.16) 52%,
+      rgba(0,0,0,0.62) 100%
+    );
+  }
+}
