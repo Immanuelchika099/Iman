@@ -6,7 +6,7 @@ function HeroGradient() {
     <div className="hero-gradient" aria-hidden="true">
       <ColorBends
         className="hero-gradient__bends"
-        colors={["#071A3D", "#123A73", "#1C5AA6"]}
+        colors={["#ff5c7a", "#8a5cff", "#00ffd1"]}
         rotation={90}
         speed={0.2}
         scale={1}
