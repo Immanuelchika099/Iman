@@ -6,7 +6,7 @@ import './ColorBends.css';
 
 const MAX_COLORS = 8;
 
-const frag = \`
+const frag = `
 #define MAX_COLORS ${MAX_COLORS}
 uniform vec2 uCanvas;
 uniform float uTime;
@@ -99,15 +99,15 @@ void main() {
     vec3 rgb = (uTransparent > 0) ? col * a : col;
     gl_FragColor = vec4(rgb, a);
 }
-\`;
+`;
 
-const vert = \`
+const vert = `
 varying vec2 vUv;
 void main() {
   vUv = uv;
   gl_Position = vec4(position, 1.0);
 }
-\`;
+`;
 
 export default function ColorBends({
   className,
