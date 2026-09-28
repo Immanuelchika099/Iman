@@ -6,7 +6,6 @@ import Marquee from "./components/Marquee/Marquee";
 import Intersection from "./components/Intersection/Intersection";
 import SelectedWork from "./components/SelectedWork/SelectedWork";
 import Tech from "./components/Tech/Tech";
-import Availability from "./components/Availability/Availability";
 import ScrollMarquee from "./components/ScrollMarquee/ScrollMarquee";
 import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
@@ -28,7 +27,7 @@ function App(){
   return <div className="site-shell">
     {loading&&<Preloader onComplete={()=>setLoading(false)}/>}
     <Navbar/>
-    <main><Hero/><Marquee/><Intersection/><SelectedWork/><Tech/><Availability/><ScrollMarquee/><Contact/></main>
+    <main><Hero/><Marquee/><Intersection/><SelectedWork/><Tech/><ScrollMarquee/><Contact/></main>
     <Footer/>
   </div>
 }
