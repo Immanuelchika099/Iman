@@ -1,1 +1,28 @@
-import{ShaderGradient,ShaderGradientCanvas}from"@shadergradient/react";import"./HeroGradient.css";function HeroGradient(){return <div className="hero-gradient" aria-hidden="true"><ShaderGradientCanvas className="hero-gradient__canvas" style={{position:"absolute",inset:0,width:"100%",height:"100%"}} pixelDensity={1} fov={45} pointerEvents="none" lazyLoad={false}><ShaderGradient type="plane" animate="on" shader="defaults" color1="#172B63" color2="#6B4FD8" color3="#C56A9A" uSpeed={0.045} uStrength={0.75} uDensity={0.8} uFrequency={1.6} cDistance={3.6} cPolarAngle={90} brightness={0.68} grain="on" grainBlending={0.025} lightType="env" envPreset="city" reflection={0.04}/></ShaderGradientCanvas><div className="hero-gradient__veil"/></div>}export default HeroGradient;
+import ColorBends from "../ColorBends/ColorBends";
+import "./HeroGradient.css";
+
+function HeroGradient() {
+  return (
+    <div className="hero-gradient" aria-hidden="true">
+      <ColorBends
+        className="hero-gradient__bends"
+        colors={["#071A3D", "#123A73", "#1C5AA6"]}
+        rotation={90}
+        speed={0.2}
+        scale={1}
+        frequency={1}
+        warpStrength={1}
+        mouseInfluence={1}
+        noise={0.15}
+        parallax={0.5}
+        iterations={1}
+        intensity={1.5}
+        bandWidth={6}
+        transparent
+      />
+      <div className="hero-gradient__veil" />
+    </div>
+  );
+}
+
+export default HeroGradient;
