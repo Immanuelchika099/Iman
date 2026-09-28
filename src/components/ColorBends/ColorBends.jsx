@@ -1,11 +1,13 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
-import "./ColorBends.css";
+'use client';
+
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
+import './ColorBends.css';
 
 const MAX_COLORS = 8;
 
-const frag = `
-#define MAX_COLORS 8
+const frag = \`
+#define MAX_COLORS \${MAX_COLORS}
 uniform vec2 uCanvas;
 uniform float uTime;
 uniform float uSpeed;
@@ -16,7 +18,7 @@ uniform int uTransparent;
 uniform float uScale;
 uniform float uFrequency;
 uniform float uWarpStrength;
-uniform vec2 uPointer;
+uniform vec2 uPointer; // in NDC [-1,1]
 uniform float uMouseInfluence;
 uniform float uParallax;
 uniform float uNoise;
@@ -34,57 +36,81 @@ void main() {
   q /= max(uScale, 0.0001);
   q /= 0.5 + 0.2 * dot(q, q);
   q += 0.2 * cos(t) - 7.56;
-  vec2 toward = uPointer - rp;
+  vec2 toward = (uPointer - rp);
   q += toward * uMouseInfluence * 0.2;
 
-  for (int j = 0; j < 5; j++) {
-    if (j >= uIterations - 1) break;
-    vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
-    q += (rr - q) * 0.15;
-  }
+    for (int j = 0; j < 5; j++) {
+      if (j >= uIterations - 1) break;
+      vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
+      q += (rr - q) * 0.15;
+    }
 
-  vec2 s = q;
-  vec3 sumCol = vec3(0.0);
-  float cover = 0.0;
+    vec3 col = vec3(0.0);
+    float a = 1.0;
 
-  for (int i = 0; i < MAX_COLORS; ++i) {
-    if (i >= uColorCount) break;
-    s -= 0.01;
-    vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
-    float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-    float kBelow = clamp(uWarpStrength, 0.0, 1.0);
-    float kMix = pow(kBelow, 0.3);
-    float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
-    vec2 disp = (r - s) * kBelow;
-    vec2 warped = s + disp * gain;
-    float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-    float m = mix(m0, m1, kMix);
-    float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
-    sumCol += uColors[i] * w;
-    cover = max(cover, w);
-  }
+    if (uColorCount > 0) {
+      vec2 s = q;
+      vec3 sumCol = vec3(0.0);
+      float cover = 0.0;
+      for (int i = 0; i < MAX_COLORS; ++i) {
+            if (i >= uColorCount) break;
+            s -= 0.01;
+            vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+            float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+            float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+            float kMix = pow(kBelow, 0.3); // strong response across 0..1
+            float gain = 1.0 + max(uWarpStrength - 1.0, 0.0); // allow >1 to amplify displacement
+            vec2 disp = (r - s) * kBelow;
+            vec2 warped = s + disp * gain;
+            float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
+            float m = mix(m0, m1, kMix);
+            float w = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+            sumCol += uColors[i] * w;
+            cover = max(cover, w);
+      }
+      col = clamp(sumCol, 0.0, 1.0);
+      a = uTransparent > 0 ? cover : 1.0;
+    } else {
+        vec2 s = q;
+        for (int k = 0; k < 3; ++k) {
+            s -= 0.01;
+            vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
+            float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(k)) / 4.0);
+            float kBelow = clamp(uWarpStrength, 0.0, 1.0);
+            float kMix = pow(kBelow, 0.3);
+            float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
+            vec2 disp = (r - s) * kBelow;
+            vec2 warped = s + disp * gain;
+            float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(k)) / 4.0);
+            float m = mix(m0, m1, kMix);
+            col[k] = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
+        }
+        a = uTransparent > 0 ? max(max(col.r, col.g), col.b) : 1.0;
+    }
 
-  vec3 col = clamp(sumCol, 0.0, 1.0) * uIntensity;
-  if (uNoise > 0.0001) {
-    float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
-    col = clamp(col + (n - 0.5) * uNoise, 0.0, 1.0);
-  }
+    col *= uIntensity;
 
-  float a = uTransparent > 0 ? cover : 1.0;
-  gl_FragColor = vec4((uTransparent > 0) ? col * a : col, a);
+    if (uNoise > 0.0001) {
+      float n = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
+      col += (n - 0.5) * uNoise;
+      col = clamp(col, 0.0, 1.0);
+    }
+
+    vec3 rgb = (uTransparent > 0) ? col * a : col;
+    gl_FragColor = vec4(rgb, a);
 }
-`;
+\`;
 
-const vert = `
+const vert = \`
 varying vec2 vUv;
 void main() {
   vUv = uv;
   gl_Position = vec4(position, 1.0);
 }
-`;
+\`;
 
 export default function ColorBends({
-  className = "",
+  className,
   style,
   rotation = 90,
   speed = 0.2,
@@ -102,36 +128,33 @@ export default function ColorBends({
   bandWidth = 6
 }) {
   const containerRef = useRef(null);
-  const materialRef = useRef(null);
   const rendererRef = useRef(null);
   const rafRef = useRef(null);
+  const materialRef = useRef(null);
   const resizeObserverRef = useRef(null);
   const rotationRef = useRef(rotation);
   const autoRotateRef = useRef(autoRotate);
   const pointerTargetRef = useRef(new THREE.Vector2(0, 0));
   const pointerCurrentRef = useRef(new THREE.Vector2(0, 0));
+  const pointerSmoothRef = useRef(8);
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
-
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const colorArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3());
 
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const uColorsArray = Array.from({ length: MAX_COLORS }, () => new THREE.Vector3(0, 0, 0));
     const material = new THREE.ShaderMaterial({
       vertexShader: vert,
       fragmentShader: frag,
-      transparent: true,
-      premultipliedAlpha: true,
       uniforms: {
         uCanvas: { value: new THREE.Vector2(1, 1) },
         uTime: { value: 0 },
         uSpeed: { value: speed },
         uRot: { value: new THREE.Vector2(1, 0) },
         uColorCount: { value: 0 },
-        uColors: { value: colorArray },
+        uColors: { value: uColorsArray },
         uTransparent: { value: transparent ? 1 : 0 },
         uScale: { value: scale },
         uFrequency: { value: frequency },
@@ -143,94 +166,90 @@ export default function ColorBends({
         uIterations: { value: iterations },
         uIntensity: { value: intensity },
         uBandWidth: { value: bandWidth }
-      }
+      },
+      premultipliedAlpha: true,
+      transparent: true
     });
-
     materialRef.current = material;
-    scene.add(new THREE.Mesh(geometry, material));
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: "high-performance" });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      powerPreference: 'high-performance',
+      alpha: true
+    });
     rendererRef.current = renderer;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setClearColor(0x000000, transparent ? 0 : 1);
-    renderer.domElement.style.cssText = "width:100%;height:100%;display:block";
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
     container.appendChild(renderer.domElement);
 
-    const resize = () => {
-      const width = container.clientWidth || 1;
-      const height = container.clientHeight || 1;
-      renderer.setSize(width, height, false);
-      material.uniforms.uCanvas.value.set(width, height);
-    };
-    resize();
+    const clock = new THREE.Clock();
 
-    if ("ResizeObserver" in window) {
-      const observer = new ResizeObserver(resize);
-      observer.observe(container);
-      resizeObserverRef.current = observer;
+    const handleResize = () => {
+      const w = container.clientWidth || 1;
+      const h = container.clientHeight || 1;
+      renderer.setSize(w, h, false);
+      material.uniforms.uCanvas.value.set(w, h);
+    };
+
+    handleResize();
+
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(handleResize);
+      ro.observe(container);
+      resizeObserverRef.current = ro;
     } else {
-      window.addEventListener("resize", resize);
+      window.addEventListener('resize', handleResize);
     }
 
-    const clock = new THREE.Clock();
     const loop = () => {
       const dt = clock.getDelta();
       const elapsed = clock.elapsedTime;
       material.uniforms.uTime.value = elapsed;
 
-      const degrees = (rotationRef.current % 360) + autoRotateRef.current * elapsed;
-      const radians = degrees * Math.PI / 180;
-      material.uniforms.uRot.value.set(Math.cos(radians), Math.sin(radians));
+      const deg = (rotationRef.current % 360) + autoRotateRef.current * elapsed;
+      const rad = (deg * Math.PI) / 180;
+      const c = Math.cos(rad);
+      const s = Math.sin(rad);
+      material.uniforms.uRot.value.set(c, s);
 
-      pointerCurrentRef.current.lerp(pointerTargetRef.current, Math.min(1, dt * 8));
-      material.uniforms.uPointer.value.copy(pointerCurrentRef.current);
+      const cur = pointerCurrentRef.current;
+      const tgt = pointerTargetRef.current;
+      const amt = Math.min(1, dt * pointerSmoothRef.current);
+      cur.lerp(tgt, amt);
+      material.uniforms.uPointer.value.copy(cur);
       renderer.render(scene, camera);
       rafRef.current = requestAnimationFrame(loop);
     };
     rafRef.current = requestAnimationFrame(loop);
 
-    const move = event => {
-      const rect = container.getBoundingClientRect();
-      pointerTargetRef.current.set(
-        ((event.clientX - rect.left) / (rect.width || 1)) * 2 - 1,
-        -(((event.clientY - rect.top) / (rect.height || 1)) * 2 - 1)
-      );
-    };
-    container.addEventListener("pointermove", move);
-
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       if (resizeObserverRef.current) resizeObserverRef.current.disconnect();
-      else window.removeEventListener("resize", resize);
-      container.removeEventListener("pointermove", move);
+      else window.removeEventListener('resize', handleResize);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
-      if (renderer.domElement.parentElement === container) container.removeChild(renderer.domElement);
+      if (renderer.domElement && renderer.domElement.parentElement === container) {
+        container.removeChild(renderer.domElement);
+      }
     };
   }, [bandWidth, frequency, intensity, iterations, mouseInfluence, noise, parallax, scale, speed, transparent, warpStrength]);
 
   useEffect(() => {
     const material = materialRef.current;
+    const renderer = rendererRef.current;
     if (!material) return;
+
     rotationRef.current = rotation;
     autoRotateRef.current = autoRotate;
-
-    const toColor = hex => {
-      const value = hex.replace("#", "");
-      const parts = value.length === 3
-        ? [value[0] + value[0], value[1] + value[1], value[2] + value[2]]
-        : [value.slice(0, 2), value.slice(2, 4), value.slice(4, 6)];
-      return new THREE.Vector3(parseInt(parts[0], 16) / 255, parseInt(parts[1], 16) / 255, parseInt(parts[2], 16) / 255);
-    };
-
-    const parsed = colors.filter(Boolean).slice(0, MAX_COLORS).map(toColor);
-    parsed.forEach((color, index) => material.uniforms.uColors.value[index].copy(color));
-    for (let index = parsed.length; index < MAX_COLORS; index++) material.uniforms.uColors.value[index].set(0, 0, 0);
-
-    material.uniforms.uColorCount.value = parsed.length;
     material.uniforms.uSpeed.value = speed;
     material.uniforms.uScale.value = scale;
     material.uniforms.uFrequency.value = frequency;
@@ -241,7 +260,60 @@ export default function ColorBends({
     material.uniforms.uIterations.value = iterations;
     material.uniforms.uIntensity.value = intensity;
     material.uniforms.uBandWidth.value = bandWidth;
-  }, [rotation, autoRotate, speed, scale, frequency, warpStrength, mouseInfluence, parallax, noise, iterations, intensity, bandWidth, colors]);
 
-  return <div ref={containerRef} className={`color-bends-container ${className}`} style={style} aria-hidden="true" />;
+    const toVec3 = hex => {
+      const h = hex.replace('#', '').trim();
+      const v =
+        h.length === 3
+          ? [parseInt(h[0] + h[0], 16), parseInt(h[1] + h[1], 16), parseInt(h[2] + h[2], 16)]
+          : [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+      return new THREE.Vector3(v[0] / 255, v[1] / 255, v[2] / 255);
+    };
+
+    const arr = (colors || []).filter(Boolean).slice(0, MAX_COLORS).map(toVec3);
+    for (let i = 0; i < MAX_COLORS; i++) {
+      const vec = material.uniforms.uColors.value[i];
+      if (i < arr.length) vec.copy(arr[i]);
+      else vec.set(0, 0, 0);
+    }
+    material.uniforms.uColorCount.value = arr.length;
+
+    material.uniforms.uTransparent.value = transparent ? 1 : 0;
+    if (renderer) renderer.setClearColor(0x000000, transparent ? 0 : 1);
+  }, [
+    rotation,
+    autoRotate,
+    speed,
+    scale,
+    frequency,
+    warpStrength,
+    mouseInfluence,
+    parallax,
+    noise,
+    iterations,
+    intensity,
+    bandWidth,
+    colors,
+    transparent
+  ]);
+
+  useEffect(() => {
+    const material = materialRef.current;
+    const container = containerRef.current;
+    if (!material || !container) return;
+
+    const handlePointerMove = e => {
+      const rect = container.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
+      const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
+      pointerTargetRef.current.set(x, y);
+    };
+
+    container.addEventListener('pointermove', handlePointerMove);
+    return () => {
+      container.removeEventListener('pointermove', handlePointerMove);
+    };
+  }, []);
+
+  return <div ref={containerRef} className={\`color-bends-container \${className}\`} style={style} />;
 }
