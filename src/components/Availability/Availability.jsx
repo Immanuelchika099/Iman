@@ -1,1 +1,25 @@
-import"./Availability.css";function Availability(){return <section className="availability"><div className="section-inner availability__inner"><span className="section-kicker">CURRENTLY</span><div><h2>BUILDING DIGITAL PRODUCTS.<br/>LEARNING SOMETHING HARDER.<br/><em>WORKING WITH AMBITIOUS PEOPLE.</em></h2><div className="availability__status"><i/> AVAILABLE FOR SELECT PROJECTS</div></div></div></section>
+import "./Availability.css";
+
+function Availability() {
+  return (
+    <section className="availability">
+      <div className="section-inner availability__inner">
+        <span className="section-kicker">CURRENTLY</span>
+        <div>
+          <h2>
+            BUILDING DIGITAL PRODUCTS.
+            <br />
+            LEARNING SOMETHING HARDER.
+            <br />
+            <em>WORKING WITH AMBITIOUS PEOPLE.</em>
+          </h2>
+          <div className="availability__status">
+            <i /> AVAILABLE FOR SELECT PROJECTS
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Availability;
