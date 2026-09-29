@@ -22,7 +22,7 @@ function CircularCarousel({
   const angle = count ? 360 / count : 0;
 
   const geometry = useMemo(() => {
-    const radius = Math.max(cardWidth * 0.58, (cardWidth / 2) / Math.tan(Math.PI / Math.max(count, 3)) * 0.72);
+    const radius = Math.min(cardWidth * 0.5, (cardWidth / 2) / Math.tan(Math.PI / Math.max(count, 3)) * 0.58);
     if (preset === "wheel") return { radius: radius * 0.82, axis: "y", shape: "wheel" };
     if (preset === "panorama") return { radius: radius * 1.2, axis: "y", shape: "panorama" };
     return { radius, axis: "y", shape: "cylinder" };
