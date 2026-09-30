@@ -56,9 +56,9 @@ function Intersection(){
     <div className="intersection__visual" ref={stage}>
       <div className="intersection__intro"><h2>I BUILD DIGITAL EXPERIENCES AT THE <em>INTERSECTION</em> OF</h2></div>
       <div className="intersection__stage">
-        <div className="intersection__ball intersection__ball--one"><WireframeBall color="#7894ff"/><span className="intersection__circle-label">AESTHETIC</span></div>
-        <div className="intersection__ball intersection__ball--two"><WireframeBall color="#a7b9ff"/><span className="intersection__circle-label">PERFORMANCE</span></div>
-        <div className="intersection__ball intersection__ball--three"><WireframeBall color="#5f7fe8"/><span className="intersection__circle-label">STRATEGY</span></div>
+        <div className="intersection__ball intersection__ball--one"><WireframeBall color="#8b8b8b"/><span className="intersection__circle-label">AESTHETIC</span></div>
+        <div className="intersection__ball intersection__ball--two"><WireframeBall color="#b8b8b8"/><span className="intersection__circle-label">PERFORMANCE</span></div>
+        <div className="intersection__ball intersection__ball--three"><WireframeBall color="#707070"/><span className="intersection__circle-label">STRATEGY</span></div>
       </div>
       <div className="intersection__reveal">
         <span className="intersection__reveal-kicker">THE RESULT</span>
