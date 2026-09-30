@@ -2,29 +2,23 @@
 .intersection__visual{width:100%;height:100vh;min-height:100svh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
 .intersection__visual:before{content:"";position:absolute;width:86rem;height:86rem;border-radius:50%;background:radial-gradient(circle,rgba(18,55,135,.08),transparent 66%);pointer-events:none}
 .intersection__intro{position:absolute;top:10rem;left:clamp(2rem,4vw,6rem);right:clamp(2rem,4vw,6rem);display:flex;justify-content:center;align-items:flex-start;text-align:center;z-index:5}
-.intersection__intro>span,.intersection__reveal-kicker{font:1.05rem var(--mono);letter-spacing:.12em;color:#666}
 .intersection__intro h2{max-width:72rem;width:100%;margin:0;font-size:clamp(3rem,5.2vw,6.8rem);line-height:.9;letter-spacing:-.07em;font-weight:500}
 .intersection em{font-style:normal;color:#fff}
-.intersection__stage{position:relative;width:min(72rem,78vw);height:min(72rem,78vw);display:flex;align-items:center;justify-content:center;margin-top:3rem}
-.intersection__circle{position:absolute;width:min(39rem,35vw);aspect-ratio:1;border:1px solid rgba(255,255,255,.22);border-radius:50%;display:grid;place-items:center;font:1rem var(--mono);letter-spacing:.14em;color:#fff;will-change:transform,opacity;transform-origin:center;backdrop-filter:blur(1px)}
-.intersection__circle:after{content:"";position:absolute;inset:1.4rem;border:1px solid rgba(255,255,255,.045);border-radius:50%}
-.intersection__circle--one{background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.035),transparent 70%)}
-.intersection__circle--two{background:radial-gradient(circle at 50% 50%,rgba(23,79,180,.08),transparent 70%)}
-.intersection__circle--three{background:radial-gradient(circle at 50% 50%,rgba(50,74,145,.08),transparent 70%)}
-.intersection__circle-label{position:relative;z-index:2;margin-top:3.8rem}
-.intersection__icon{position:absolute;top:calc(50% - 4.3rem);left:50%;width:4.8rem;height:4.8rem;transform:translate(-50%,-50%);display:grid;place-items:center;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(0,0,0,.5);box-shadow:0 0 3rem rgba(25,75,180,.06);z-index:3;will-change:transform,opacity}
-.intersection__icon svg{width:1.7rem;height:1.7rem;fill:none;stroke:#fff;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
-.intersection__center-mark{position:absolute;width:7rem;height:7rem;border:1px solid rgba(255,255,255,.1);border-radius:50%;display:grid;place-items:center;z-index:5}
-.intersection__center-mark:before{content:"";position:absolute;width:2.2rem;height:2.2rem;border:1px solid rgba(255,255,255,.32);border-radius:50%}
-.intersection__center-mark span{width:.5rem;height:.5rem;border-radius:50%;background:#fff;box-shadow:0 0 2rem rgba(255,255,255,.6)}
-.intersection__info{position:absolute;bottom:7rem;width:min(48rem,80%);height:8rem;display:flex;align-items:center;justify-content:center;z-index:6}
-.intersection__info-text{position:absolute;width:100%;text-align:center;font:300 1.5rem/1.55 var(--body);color:#888;margin:0}
+.intersection__stage{position:relative;width:min(92rem,92vw);height:min(60rem,68vh);display:flex;align-items:center;justify-content:center;margin-top:5rem}
+.intersection__ball{position:absolute;width:22rem;height:22rem;display:flex;align-items:center;justify-content:center;will-change:transform,opacity;transform-origin:center;z-index:2}
+.intersection__ball--one{left:4%;top:50%;transform:translateY(-50%)}
+.intersection__ball--two{left:50%;top:17%;transform:translateX(-50%)}
+.intersection__ball--three{right:4%;top:50%;transform:translateY(-50%)}
+.wireframe-ball{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}
+.wireframe-ball canvas{width:100%;height:100%;display:block}
+.intersection__circle-label{position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,7.5rem);font:1rem var(--mono);letter-spacing:.14em;color:#fff;white-space:nowrap}
 .intersection__reveal{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8rem clamp(2rem,6vw,8rem);background:#000;text-align:center}
+.intersection__reveal-kicker{font:1.05rem var(--mono);letter-spacing:.12em;color:#666}
 .intersection__statement{max-width:96rem;margin:2rem 0 0;font:clamp(2.4rem,4vw,5.2rem)/1.12 var(--body);color:#fff;letter-spacing:-.045em}
 .intersection__statement-word{display:inline-block;white-space:pre;will-change:transform,filter,opacity}
 .intersection__about-button{display:inline-flex;align-items:center;gap:1.1rem;margin-top:4rem;padding:1.3rem 1.6rem;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.035);color:#fff;font:500 1.2rem var(--mono);letter-spacing:.08em;text-decoration:none;transition:transform .35s ease,border-color .35s ease,background .35s ease}
 .intersection__about-button span{display:grid;place-items:center;width:2.8rem;height:2.8rem;border-radius:50%;background:#fff;color:#000}
 .intersection__about-button svg{width:1.4rem;height:1.4rem;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .intersection__about-button:hover{transform:translateY(-.3rem);border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.08)}
-@media(max-width:70rem){.intersection__intro{top:6.5rem;display:flex}.intersection__intro h2{margin-top:1.5rem;font-size:3rem}.intersection__stage{width:39rem;height:39rem}.intersection__circle{width:24rem}.intersection__center-mark{width:6rem;height:6rem}.intersection__info{bottom:4rem;padding:0 2rem}.intersection__info-text{font-size:1.4rem}.intersection__reveal{padding:6rem 2rem}.intersection__statement{font-size:2.35rem;line-height:1.25;margin-top:1.5rem}.intersection__about-button{margin-top:3rem}}
-@media(max-width:48rem){.intersection__visual{height:100svh}.intersection__intro{top:5.5rem;left:1.8rem;right:1.8rem;display:flex}.intersection__intro>span{font-size:.9rem}.intersection__intro h2{font-size:2.35rem;line-height:.98}.intersection__stage{width:32rem;height:32rem;margin-top:2rem}.intersection__circle{width:19rem;font-size:.95rem}.intersection__circle-label{margin-top:3.2rem}.intersection__icon{top:calc(50% - 3.1rem);width:4rem;height:4rem}.intersection__icon svg{width:1.5rem;height:1.5rem}.intersection__center-mark{width:5rem;height:5rem}.intersection__info{bottom:3rem;height:7rem;width:calc(100% - 3.6rem)}.intersection__info-text{font-size:1.35rem;line-height:1.45}.intersection__reveal{padding:5rem 1.8rem}.intersection__statement{font-size:2.15rem;line-height:1.3}.intersection__about-button{font-size:1.05rem;padding:1.1rem 1.3rem}}
+@media(max-width:70rem){.intersection__intro{top:6.5rem}.intersection__intro h2{margin-top:1.5rem;font-size:3rem}.intersection__stage{width:100%;height:48rem;margin-top:4rem}.intersection__ball{width:17rem;height:17rem}.intersection__ball--one{left:0}.intersection__ball--two{top:18%}.intersection__ball--three{right:0}.intersection__circle-label{transform:translate(-50%,6rem);font-size:.95rem}.intersection__reveal{padding:6rem 2rem}.intersection__statement{font-size:2.35rem;line-height:1.25;margin-top:1.5rem}.intersection__about-button{margin-top:3rem}}
+@media(max-width:48rem){.intersection__visual{height:100svh}.intersection__intro{top:5.5rem;left:1.8rem;right:1.8rem}.intersection__intro h2{font-size:2.35rem;line-height:.98}.intersection__stage{height:35rem;margin-top:4rem}.intersection__ball{width:11rem;height:11rem}.intersection__circle-label{transform:translate(-50%,4.7rem);font-size:.85rem}.intersection__reveal{padding:5rem 1.8rem}.intersection__statement{font-size:2.15rem;line-height:1.3}}
