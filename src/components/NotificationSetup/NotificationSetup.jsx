@@ -12,6 +12,7 @@ function NotificationSetup() {
   const [authState, setAuthState] = useState("checking");
   const [userEmail, setUserEmail] = useState("");
   const [loginState, setLoginState] = useState("");
+  const [otp, setOtp] = useState("");
   const [status, setStatus] = useState("checking");
   const [message, setMessage] = useState("");
 
@@ -62,14 +63,13 @@ function NotificationSetup() {
     };
   }, []);
 
-  async function sendLoginLink() {
+  async function sendLoginCode() {
     setLoginState("sending");
 
     const { error } = await supabase.auth.signInWithOtp({
       email: ADMIN_EMAIL,
       options: {
-        emailRedirectTo: `${window.location.origin}/iman-notifications`,
-        shouldCreateUser: true,
+        shouldCreateUser: false,
       },
     });
 
@@ -78,7 +78,33 @@ function NotificationSetup() {
       return;
     }
 
-    setLoginState("sent");
+    setLoginState("code_sent");
+  }
+
+  async function verifyLoginCode(event) {
+    event.preventDefault();
+
+    const cleanOtp = otp.replace(/\D/g, "");
+
+    if (cleanOtp.length < 6) {
+      setLoginState("Enter the verification code from your email.");
+      return;
+    }
+
+    setLoginState("verifying");
+
+    const { error } = await supabase.auth.verifyOtp({
+      email: ADMIN_EMAIL,
+      token: cleanOtp,
+      type: "email",
+    });
+
+    if (error) {
+      setLoginState(error.message);
+      return;
+    }
+
+    setLoginState("verified");
   }
 
   async function enable() {
@@ -132,41 +158,75 @@ function NotificationSetup() {
             <em>ACCESS.</em>
           </h1>
 
-          {authState === "unauthorized" ? (
-            <p className="notification-setup__message">
-              This account is not authorized to access notification settings.
-            </p>
-          ) : (
-            <p className="notification-setup__message">
-              This area is only available to the portfolio owner.
-            </p>
-          )}
+          <p className="notification-setup__message">
+            {authState === "unauthorized"
+              ? "This account is not authorized to access notification settings."
+              : "This area is only available to the portfolio owner."}
+          </p>
 
-          {loginState === "sent" ? (
-            <div className="notification-setup__success">
-              <span>✓</span>
-              <p>
-                Login link sent. Check your email and open the link on this
-                device.
-              </p>
-            </div>
+          {loginState === "code_sent" ? (
+            <form
+              className="notification-setup__login-form"
+              onSubmit={verifyLoginCode}
+            >
+              <div className="notification-setup__success">
+                <span>✓</span>
+                <p>
+                  Verification code sent. Check your email and enter the code
+                  below on this device.
+                </p>
+              </div>
+
+              <input
+                className="notification-setup__otp"
+                value={otp}
+                onChange={(event) =>
+                  setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))
+                }
+                inputMode="numeric"
+                autoComplete="one-time-code"
+                placeholder="000000"
+                aria-label="Email verification code"
+                autoFocus
+              />
+
+              <button
+                className="notification-setup__button"
+                type="submit"
+                disabled={loginState === "verifying" || otp.length < 6}
+              >
+                {loginState === "verifying" ? "VERIFYING..." : "VERIFY CODE"}
+                <span aria-hidden="true">→</span>
+              </button>
+
+              <button
+                className="notification-setup__resend"
+                type="button"
+                onClick={sendLoginCode}
+                disabled={loginState === "sending" || loginState === "verifying"}
+              >
+                SEND A NEW CODE
+              </button>
+            </form>
           ) : (
             <button
               className="notification-setup__button"
               type="button"
-              onClick={sendLoginLink}
+              onClick={sendLoginCode}
               disabled={loginState === "sending"}
             >
               {loginState === "sending"
-                ? "SENDING LOGIN LINK..."
-                : "SEND ME A LOGIN LINK"}
+                ? "SENDING CODE..."
+                : "SEND ME A LOGIN CODE"}
               <span aria-hidden="true">→</span>
             </button>
           )}
 
           {loginState &&
-            loginState !== "sent" &&
-            loginState !== "sending" && (
+            loginState !== "code_sent" &&
+            loginState !== "sending" &&
+            loginState !== "verifying" &&
+            loginState !== "verified" && (
               <p className="notification-setup__message">{loginState}</p>
             )}
         </div>
@@ -204,9 +264,9 @@ function NotificationSetup() {
 
         {isIos && !isStandalone && (
           <div className="notification-setup__note">
-            <strong>On iPhone:</strong> add this website to your Home Screen
-            first. Then open the Home Screen version and come back to this
-            page to enable notifications.
+            <strong>One step first:</strong> add this website to your Home
+            Screen, then open the Home Screen version. You can complete the
+            login and enable notifications there.
           </div>
         )}
 
