@@ -13,6 +13,7 @@ import Footer from "./components/Footer/Footer";
 import StartProject from "./components/StartProject/StartProject";
 import About from "./components/About/About";
 import NotificationSetup from "./components/NotificationSetup/NotificationSetup";
+import ResetPassword from "./components/ResetPassword/ResetPassword";
 import "./App.css";
 
 function App() {
@@ -62,6 +63,9 @@ function App() {
         <Footer />
       </div>
     );
+
+  if (path === "/iman-notifications/reset-password")
+    return <ResetPassword />;
 
   if (path === "/iman-notifications")
     return (
