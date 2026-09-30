@@ -4,8 +4,8 @@
 .work-track{display:flex;align-items:flex-start;gap:3.5rem;width:max-content;will-change:transform}
 .work-card{width:min(64vw,88rem,92svh);flex:0 0 min(64vw,88rem,92svh)}
 .all-projects-button{display:flex;align-items:center;justify-content:center;gap:1rem;width:max-content;margin:5rem auto 7rem;padding:1.5rem 2.2rem;border:1px solid rgba(255,255,255,.25);border-radius:999px;color:var(--text);background:rgba(255,255,255,.03);font:1.2rem var(--mono);letter-spacing:.06em;text-decoration:none;transition:transform .35s var(--ease),border-color .35s var(--ease),background .35s var(--ease),color .35s var(--ease)}
-.selected-work__squares{position:absolute;inset:0;height:42rem;z-index:0;opacity:.9;mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.8) 45%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,rgba(0,0,0,.8) 45%,transparent 100%)}
-.selected-work__squares canvas{opacity:.9}
+.selected-work__squares{position:absolute;top:-21rem;right:0;width:min(62rem,52vw);height:63rem;z-index:0;opacity:.9;pointer-events:none;mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.12) 13%,#000 31%,rgba(0,0,0,.92) 62%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,transparent 0%,rgba(0,0,0,.12) 13%,#000 31%,rgba(0,0,0,.92) 62%,transparent 100%)}
+.selected-work__squares canvas{width:100%!important;height:100%!important;opacity:.9}
 .section-inner{position:relative;z-index:1}
 .work-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:4rem}
 .section-kicker{font:1.1rem var(--mono);color:var(--muted);letter-spacing:.06em}
