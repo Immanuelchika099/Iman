@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 let lenisInstance = null;
 
 export function initSmoothScroll() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
   if (lenisInstance) return () => {};
 
   const lenis = new Lenis({
