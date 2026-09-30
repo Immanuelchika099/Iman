@@ -18,7 +18,6 @@ function Intersection(){
       const labels=q(".intersection__circle-label");
       const iconsEl=q(".intersection__icon");
       const intro=q(".intersection__intro");
-      const info=q(".intersection__info-text");
       const reveal=q(".intersection__reveal");
       const words=q(".intersection__statement-word");
       const about=q(".intersection__about-button");
@@ -30,7 +29,6 @@ function Intersection(){
       gsap.set(circles[2],{x:0,y:70});
       gsap.set(labels,{opacity:.35});
       gsap.set(iconsEl,{opacity:.2,y:8,scale:.82});
-      gsap.set(info,{opacity:0,y:24});
       gsap.set(reveal,{autoAlpha:0});
       gsap.set(words,{opacity:0,filter:"blur(16px)",y:18});
       gsap.set(about,{opacity:0,y:20});
@@ -47,27 +45,21 @@ function Intersection(){
         .to(circles[2],{scale:1,opacity:.72,x:0,y:80,duration:1,ease:"power3.out"},"<")
         .to(labels[0],{opacity:1,duration:.4},"<.35")
         .to(iconsEl[0],{opacity:1,y:0,scale:1,duration:.45},"<")
-        .to(info[0],{opacity:1,y:0,duration:.6},"<")
         .call(()=>floatTweens[0].play())
-        .to(info[0],{opacity:0,y:-18,duration:.45},"+=.65")
         .to(labels[0],{opacity:.35,duration:.3},"<")
         .to(iconsEl[0],{opacity:.2,y:8,scale:.82,duration:.3},"<")
         .to(circles[0],{scale:.9,x:-115,y:-115,opacity:.35,duration:.7},"<")
         .to(circles[1],{scale:1.08,x:115,y:115,opacity:.9,duration:.7},"<")
         .to(labels[1],{opacity:1,duration:.4},"<.25")
         .to(iconsEl[1],{opacity:1,y:0,scale:1,duration:.45},"<")
-        .to(info[1],{opacity:1,y:0,duration:.6},"<")
         .call(()=>floatTweens[1].play())
-        .to(info[1],{opacity:0,y:-18,duration:.45},"+=.65")
         .to(labels[1],{opacity:.35,duration:.3},"<")
         .to(iconsEl[1],{opacity:.2,y:8,scale:.82,duration:.3},"<")
         .to(circles[1],{scale:.9,x:120,y:120,opacity:.35,duration:.7},"<")
         .to(circles[2],{scale:1.08,x:0,y:115,opacity:.9,duration:.7},"<")
         .to(labels[2],{opacity:1,duration:.4},"<.25")
         .to(iconsEl[2],{opacity:1,y:0,scale:1,duration:.45},"<")
-        .to(info[2],{opacity:1,y:0,duration:.6},"<")
         .call(()=>floatTweens[2].play())
-        .to(info[2],{opacity:0,y:-18,duration:.45},"+=.65")
         .to(labels[2],{opacity:.35,duration:.3},"<")
         .to(iconsEl[2],{opacity:.2,y:8,scale:.82,duration:.3},"<")
         .to(circles,{scale:1,opacity:.58,x:0,y:0,duration:1,ease:"power3.inOut"})
@@ -87,7 +79,6 @@ function Intersection(){
         <div className="intersection__circle intersection__circle--three"><span className="intersection__icon">{icons[2]}</span><span className="intersection__circle-label">INTELLIGENCE</span></div>
         <div className="intersection__center-mark" aria-hidden="true"><span/></div>
       </div>
-      <div className="intersection__info"><p className="intersection__info-text">Thoughtful visual systems that give digital products clarity, character and a reason to be remembered.</p><p className="intersection__info-text">Solid engineering underneath the interface, built for speed, responsiveness and a smooth experience.</p><p className="intersection__info-text">AI and intelligent systems used where they genuinely make a product more useful, adaptive or capable.</p></div>
       <div className="intersection__reveal">
         <span className="intersection__reveal-kicker">THE RESULT</span>
         <p className="intersection__statement">{statement.split(" ").map((word,i)=><span className="intersection__statement-word" key={i}>{word}{i<statement.split(" ").length-1?" ":""}</span>)}</p>
