@@ -4,7 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "../../data/projects";
 import "./SelectedWork.css";
 import BlinkingSquares from "../BlinkingSquares/BlinkingSquares";
-import ThinkingDots from "../ThinkingDots/ThinkingDots";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -133,7 +132,6 @@ function SelectedWork() {
 
   return (
     <section id="work" className="selected-work" ref={section}>
-      <ThinkingDots className="selected-work__thinking" />
       <div className="selected-work__squares">
         <BlinkingSquares
           direction="right"
