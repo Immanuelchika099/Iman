@@ -21,6 +21,8 @@ function HeroGradient() {
         autoRotate={0}
         color="#3B82F6"
       />
+      <div className="hero-gradient__left-fade" />
+      <div className="hero-gradient__bottom-fade" />
     </div>
   );
 }
