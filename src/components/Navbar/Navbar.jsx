@@ -8,6 +8,36 @@ function Navbar(){
     return()=>tl.kill()
   },[]);
   useLayoutEffect(()=>{
+    let lastY=0;
+    let ticking=false;
+    const threshold=8;
+    const update=(y)=>{
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{
+        const currentY=Math.max(0,y);
+        if(currentY<30){
+          gsap.to(nav.current,{yPercent:0,duration:.45,ease:"power3.out",overwrite:true});
+        }else if(currentY>lastY+threshold&&!open){
+          gsap.to(nav.current,{yPercent:-140,duration:.5,ease:"power3.inOut",overwrite:true});
+        }else if(currentY<lastY-threshold){
+          gsap.to(nav.current,{yPercent:0,duration:.5,ease:"power3.out",overwrite:true});
+        }
+        lastY=currentY;
+        ticking=false;
+      });
+    };
+    const lenis=window.__imanLenis;
+    const onLenisScroll=({scroll})=>update(scroll);
+    const onWindowScroll=()=>update(window.scrollY);
+    if(lenis)lenis.on("scroll",onLenisScroll);
+    window.addEventListener("scroll",onWindowScroll,{passive:true});
+    return()=>{
+      if(lenis)lenis.off("scroll",onLenisScroll);
+      window.removeEventListener("scroll",onWindowScroll);
+    };
+  },[open]);
+  useLayoutEffect(()=>{
     if(!menuPanel.current)return;
     const items=menuItems.current.filter(Boolean);
     if(open){
