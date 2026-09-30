@@ -17,7 +17,15 @@ function App(){
   const [path,setPath]=useState(window.location.pathname);
   const [loading,setLoading]=useState(true);
   useEffect(()=>{const onPop=()=>setPath(window.location.pathname);window.addEventListener("popstate",onPop);return()=>window.removeEventListener("popstate",onPop)},[]);
-  useEffect(()=>{\n    const cleanup = initSmoothScroll();\n    return cleanup;\n  },[]);\n  useEffect(()=>{\n    const lenis = window.__imanLenis;\n    if (lenis) lenis.scrollTo(0,{immediate:true});\n    else window.scrollTo({top:0,left:0,behavior:"auto"});\n  },[path]);
+  useEffect(()=>{
+    const cleanup = initSmoothScroll();
+    return cleanup;
+  },[]);
+  useEffect(()=>{
+    const lenis = window.__imanLenis;
+    if (lenis) lenis.scrollTo(0,{immediate:true});
+    else window.scrollTo({top:0,left:0,behavior:"auto"});
+  },[path]);
   useEffect(()=>{
     document.documentElement.classList.toggle("is-loading",loading);
     const fallback=window.setTimeout(()=>setLoading(false),2200);
