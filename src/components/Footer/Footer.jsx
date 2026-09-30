@@ -1,1 +1,16 @@
-import"./Footer.css";function Footer(){return <footer className="footer"><div className="section-inner footer__grid"><strong>IMAN</strong><span>SOFTWARE ENGINEER · CREATIVE DEVELOPER · AI INTEGRATION</span><span>WEBSITES · WEB APPS · AI</span><span>© {new Date().getFullYear()}</span></div></footer>
+import "./Footer.css";
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="section-inner footer__grid">
+        <strong>IMAN</strong>
+        <span>SOFTWARE ENGINEER · CREATIVE DEVELOPER · AI INTEGRATION</span>
+        <span>WEBSITES · WEB APPS · AI</span>
+        <span>© {new Date().getFullYear()}</span>
+      </div>
+    </footer>
+  );
+}
+
+export default Footer;
