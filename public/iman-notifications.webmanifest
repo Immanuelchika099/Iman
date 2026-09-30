@@ -3,7 +3,7 @@
   "name": "IMAN Notifications",
   "short_name": "IMAN Alerts",
   "start_url": "/iman-notifications",
-  "scope": "/iman-notifications/",
+  "scope": "/iman-notifications",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000"
