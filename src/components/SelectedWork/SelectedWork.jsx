@@ -106,8 +106,8 @@ function SelectedWork() {
           const bottom = card.querySelector(".work-card__bottom");
           const info = card.querySelector(".work-card__info");
 
-          gsap.set(card, { opacity: 0, y: 90, clipPath: "inset(10% 0 5% 0)" });
-          gsap.set(image, { scale: 1.16, yPercent: 5 });
+          gsap.set(card, { opacity: 1, y: 0, clearProps: "clipPath" });
+          gsap.set(image, { scale: 1.08, yPercent: 4 });
           gsap.set(shade, { opacity: 0.35 });
           gsap.set(top, { y: 22, autoAlpha: 0 });
           gsap.set(bottom, { y: 35 });
@@ -118,7 +118,7 @@ function SelectedWork() {
           });
 
           intro
-            .to(card, { opacity: 1, y: 0, clipPath: "inset(0% 0 0% 0)", ease: "power3.out", duration: 1 }, 0)
+            .to(card, { y: 0, ease: "power3.out", duration: 1 }, 0)
             .to(image, { scale: 1.02, yPercent: 0, ease: "power2.out", duration: 1 }, 0)
             .to(shade, { opacity: 1, ease: "none", duration: 0.8 }, 0)
             .to(top, { y: 0, autoAlpha: 1, ease: "power3.out", duration: 0.7 }, 0.2)
