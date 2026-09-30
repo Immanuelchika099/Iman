@@ -12,6 +12,7 @@ function NotificationSetup() {
   const [authState, setAuthState] = useState("checking");
   const [userEmail, setUserEmail] = useState("");
   const [loginState, setLoginState] = useState("");
+  const [resetState, setResetState] = useState("");
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState("checking");
   const [message, setMessage] = useState("");
@@ -83,6 +84,22 @@ function NotificationSetup() {
   async function handleLogin(event) {
     event.preventDefault();
     await signIn();
+  }
+
+  async function sendPasswordReset() {
+    setResetState("sending");
+
+    const { error } = await supabase.auth.resetPasswordForEmail(ADMIN_EMAIL, {
+      redirectTo:
+        "https://iman-chika.vercel.app/iman-notifications/reset-password",
+    });
+
+    if (error) {
+      setResetState(error.message);
+      return;
+    }
+
+    setResetState("sent");
   }
 
   async function enable() {
@@ -168,6 +185,25 @@ function NotificationSetup() {
               <span aria-hidden="true">→</span>
             </button>
           </form>
+
+          <button
+            className="notification-setup__resend"
+            type="button"
+            onClick={sendPasswordReset}
+            disabled={resetState === "sending"}
+          >
+            {resetState === "sending" ? "SENDING..." : "FORGOT PASSWORD?"}
+          </button>
+
+          {resetState === "sent" && (
+            <p className="notification-setup__message">
+              Recovery email sent. Open the newest email and use the reset link.
+            </p>
+          )}
+
+          {resetState && resetState !== "sending" && resetState !== "sent" && (
+            <p className="notification-setup__message">{resetState}</p>
+          )}
 
           {loginState &&
             loginState !== "signing_in" &&
