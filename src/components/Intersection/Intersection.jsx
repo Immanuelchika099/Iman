@@ -61,7 +61,6 @@ function Intersection(){
         <div className="intersection__ball intersection__ball--three"><WireframeBall color="#707070"/><span className="intersection__circle-label">STRATEGY</span></div>
       </div>
       <div className="intersection__reveal">
-        <span className="intersection__reveal-kicker">THE RESULT</span>
         <p className="intersection__statement">{statement.split(" ").map((word,i)=><span className="intersection__statement-word" key={i}>{word}{i<statement.split(" ").length-1?" ":""}</span>)}</p>
         <a className="intersection__about-button" href="/about" onClick={e=>{e.preventDefault();window.history.pushState({},"","/about");window.scrollTo(0,0);window.dispatchEvent(new PopStateEvent("popstate"))}}>ABOUT ME <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></a>
       </div>
