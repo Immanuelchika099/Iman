@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/iman-notifications/reset-password",
+      "destination": "/iman-notifications/index.html"
+    },
+    {
       "source": "/iman-notifications",
       "destination": "/iman-notifications/index.html"
     },
