@@ -18,7 +18,7 @@ function InquiryCard({ inquiry, index, onDelete }) {
   }
 
   return (
-    <article className={\`inquiry-card \${open ? "is-open" : ""}\`}>
+    <article className={`inquiry-card ${open ? "is-open" : ""}`}>
       <button className="inquiry-card__header" type="button" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
         <span className="inquiry-card__number">{String(index + 1).padStart(2, "0")}</span>
         <span className="inquiry-card__identity"><strong>{inquiry.name || "Unnamed client"}</strong><span>{inquiry.email || "No email provided"}</span></span>
