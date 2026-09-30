@@ -2,9 +2,9 @@ import{useLayoutEffect,useRef}from"react";import gsap from"gsap";import{ScrollTr
 
 const statement="I combine design, technology, and AI to build digital experiences that are clear, useful, and built to last — with thoughtful interactions, solid engineering, and intelligent features that make the final product genuinely better to use.";
 const icons=[
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v18M17 3v18M3 7h18M3 17h18"/></svg>,
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5-6 7 6 7M16 5l6 7-6 7M14 3l-4 18"/></svg>,
-  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><circle cx="5" cy="7" r="1.5"/><circle cx="19" cy="7" r="1.5"/><circle cx="5" cy="17" r="1.5"/><circle cx="19" cy="17" r="1.5"/><path d="m7 8.5 3 2M17 8.5l-3 2M7 15.5l3-2M17 15.5l-3-2"/></svg>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19V5h14v14H5Z"/><path d="M5 12h14M12 5v14"/></svg>,
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4 3 12l4 8M17 4l4 8-4 8M14 3l-4 18"/></svg>,
+  <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16M7 7l10 10M17 7 7 17"/></svg>
 ];
 
 function Intersection(){
@@ -74,9 +74,9 @@ function Intersection(){
     <div className="intersection__visual" ref={stage}>
       <div className="intersection__intro"><h2>I BUILD DIGITAL EXPERIENCES AT THE <em>INTERSECTION</em> OF</h2></div>
       <div className="intersection__stage">
-        <div className="intersection__circle intersection__circle--one"><span className="intersection__icon">{icons[0]}</span><span className="intersection__circle-label">DESIGN</span></div>
-        <div className="intersection__circle intersection__circle--two"><span className="intersection__icon">{icons[1]}</span><span className="intersection__circle-label">TECHNOLOGY</span></div>
-        <div className="intersection__circle intersection__circle--three"><span className="intersection__icon">{icons[2]}</span><span className="intersection__circle-label">INTELLIGENCE</span></div>
+        <div className="intersection__circle intersection__circle--one"><span className="intersection__icon">{icons[0]}</span><span className="intersection__circle-label">AESTHETIC</span></div>
+        <div className="intersection__circle intersection__circle--two"><span className="intersection__icon">{icons[1]}</span><span className="intersection__circle-label">PERFORMANCE</span></div>
+        <div className="intersection__circle intersection__circle--three"><span className="intersection__icon">{icons[2]}</span><span className="intersection__circle-label">STRATEGY</span></div>
         <div className="intersection__center-mark" aria-hidden="true"><span/></div>
       </div>
       <div className="intersection__reveal">
