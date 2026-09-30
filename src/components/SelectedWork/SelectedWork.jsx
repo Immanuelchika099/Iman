@@ -58,85 +58,71 @@ function ProjectCard({ project, index }) {
 function SelectedWork() {
   const section = useRef(null);
 
+  const track = useRef(null);
+
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray("[data-work-card]");
+      const mm = gsap.matchMedia();
 
-      cards.forEach((card, index) => {
-        const visual = card.querySelector(".work-card__visual");
-        const image = card.querySelector("img");
-        const shade = card.querySelector(".work-card__shade");
-        const top = card.querySelector(".work-card__top");
-        const bottom = card.querySelector(".work-card__bottom");
-        const info = card.querySelector(".work-card__info");
+      mm.add("(min-width: 71rem)", () => {
+        const cards = gsap.utils.toArray("[data-work-card]");
+        const distance = () => Math.max(0, track.current.scrollWidth - window.innerWidth);
 
-        gsap.set(card, { opacity: 0, y: 90, clipPath: "inset(10% 0 5% 0)" });
-        gsap.set(image, { scale: 1.16, yPercent: 5 });
-        gsap.set(shade, { opacity: 0.35 });
-        gsap.set(top, { y: 22, autoAlpha: 0 });
-        gsap.set(bottom, { y: 35 });
-        gsap.set(info, { y: 28, opacity: 0 });
-
-        const intro = gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: "top 88%",
-            end: "top 38%",
-            scrub: 1.15,
-          },
+        gsap.set(cards, { opacity: 0, y: 70, clipPath: "inset(8% 0 4% 0)" });
+        cards.forEach((card) => {
+          gsap.set(card.querySelector("img"), { scale: 1.12 });
+          gsap.set(card.querySelector(".work-card__info"), { y: 24, opacity: 0 });
         });
 
-        intro
-          .to(card, { opacity: 1, y: 0, clipPath: "inset(0% 0 0% 0)", ease: "power3.out", duration: 1 }, 0)
-          .to(image, { scale: 1.02, yPercent: 0, ease: "power2.out", duration: 1 }, 0)
-          .to(shade, { opacity: 1, ease: "none", duration: 0.8 }, 0)
-          .to(top, { y: 0, autoAlpha: 1, ease: "power3.out", duration: 0.7 }, 0.2)
-          .to(bottom, { y: 0, ease: "power3.out", duration: 0.85 }, 0.12)
-          .to(info, { y: 0, opacity: 1, ease: "power2.out", duration: 0.8 }, 0.3);
-
-        gsap.to(image, {
-          yPercent: index % 2 === 0 ? -4 : -7,
-          scale: 1.08,
-          ease: "none",
+        const timeline = gsap.timeline({
           scrollTrigger: {
-            trigger: visual,
-            start: "top 72%",
-            end: "bottom 24%",
-            scrub: 1.2,
-          },
+            trigger: section.current,
+            start: "top top",
+            end: () => `+=${distance()}`,
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
         });
 
-        gsap.to(bottom, {
-          y: index % 2 === 0 ? -18 : -28,
-          ease: "none",
-          scrollTrigger: {
-            trigger: visual,
-            start: "top 72%",
-            end: "bottom 18%",
-            scrub: 1.1,
-          },
-        });
+        timeline
+          .to(cards, { opacity: 1, y: 0, clipPath: "inset(0% 0 0% 0)", duration: 0.25, stagger: 0.07, ease: "power3.out" }, 0)
+          .to(cards.map((card) => card.querySelector("img")), { scale: 1, duration: 0.3, stagger: 0.07, ease: "power2.out" }, 0)
+          .to(cards.map((card) => card.querySelector(".work-card__info")), { y: 0, opacity: 1, duration: 0.22, stagger: 0.07, ease: "power2.out" }, 0.1)
+          .to(track.current, { x: () => -distance(), duration: 1, ease: "none" }, 0.08);
 
-        gsap.to(info, {
-          y: index % 2 === 0 ? -10 : -18,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 38%",
-            end: "bottom 12%",
-            scrub: 1.2,
-          },
-        });
+        return () => timeline.scrollTrigger?.kill();
+      });
 
-        gsap.to(card, {
-          x: index % 2 === 0 ? -10 : 10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 30%",
-            end: "bottom 8%",
-            scrub: 1.3,
-          },
+      mm.add("(max-width: 70.99rem)", () => {
+        const cards = gsap.utils.toArray("[data-work-card]");
+
+        cards.forEach((card) => {
+          const image = card.querySelector("img");
+          const shade = card.querySelector(".work-card__shade");
+          const top = card.querySelector(".work-card__top");
+          const bottom = card.querySelector(".work-card__bottom");
+          const info = card.querySelector(".work-card__info");
+
+          gsap.set(card, { opacity: 0, y: 90, clipPath: "inset(10% 0 5% 0)" });
+          gsap.set(image, { scale: 1.16, yPercent: 5 });
+          gsap.set(shade, { opacity: 0.35 });
+          gsap.set(top, { y: 22, autoAlpha: 0 });
+          gsap.set(bottom, { y: 35 });
+          gsap.set(info, { y: 28, opacity: 0 });
+
+          const intro = gsap.timeline({
+            scrollTrigger: { trigger: card, start: "top 88%", end: "top 38%", scrub: 1.15 }
+          });
+
+          intro
+            .to(card, { opacity: 1, y: 0, clipPath: "inset(0% 0 0% 0)", ease: "power3.out", duration: 1 }, 0)
+            .to(image, { scale: 1.02, yPercent: 0, ease: "power2.out", duration: 1 }, 0)
+            .to(shade, { opacity: 1, ease: "none", duration: 0.8 }, 0)
+            .to(top, { y: 0, autoAlpha: 1, ease: "power3.out", duration: 0.7 }, 0.2)
+            .to(bottom, { y: 0, ease: "power3.out", duration: 0.85 }, 0.12)
+            .to(info, { y: 0, opacity: 1, ease: "power2.out", duration: 0.8 }, 0.3);
         });
       });
     }, section);
