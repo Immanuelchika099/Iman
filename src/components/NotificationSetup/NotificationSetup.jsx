@@ -12,7 +12,7 @@ function NotificationSetup() {
   const [authState, setAuthState] = useState("checking");
   const [userEmail, setUserEmail] = useState("");
   const [loginState, setLoginState] = useState("");
-  const [otp, setOtp] = useState("");
+  const [password, setPassword] = useState("");
   const [status, setStatus] = useState("checking");
   const [message, setMessage] = useState("");
 
@@ -63,14 +63,12 @@ function NotificationSetup() {
     };
   }, []);
 
-  async function sendLoginCode() {
-    setLoginState("sending");
+  async function signIn() {
+    setLoginState("signing_in");
 
-    const { error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithPassword({
       email: ADMIN_EMAIL,
-      options: {
-        shouldCreateUser: false,
-      },
+      password,
     });
 
     if (error) {
@@ -78,33 +76,13 @@ function NotificationSetup() {
       return;
     }
 
-    setLoginState("code_sent");
+    setLoginState("signed_in");
+    setPassword("");
   }
 
-  async function verifyLoginCode(event) {
+  async function handleLogin(event) {
     event.preventDefault();
-
-    const cleanOtp = otp.replace(/\D/g, "");
-
-    if (cleanOtp.length < 6) {
-      setLoginState("Enter the verification code from your email.");
-      return;
-    }
-
-    setLoginState("verifying");
-
-    const { error } = await supabase.auth.verifyOtp({
-      email: ADMIN_EMAIL,
-      token: cleanOtp,
-      type: "email",
-    });
-
-    if (error) {
-      setLoginState(error.message);
-      return;
-    }
-
-    setLoginState("verified");
+    await signIn();
   }
 
   async function enable() {
@@ -161,72 +139,39 @@ function NotificationSetup() {
           <p className="notification-setup__message">
             {authState === "unauthorized"
               ? "This account is not authorized to access notification settings."
-              : "This area is only available to the portfolio owner."}
+              : "Enter your private access password to continue."}
           </p>
 
-          {loginState === "code_sent" ? (
-            <form
-              className="notification-setup__login-form"
-              onSubmit={verifyLoginCode}
-            >
-              <div className="notification-setup__success">
-                <span>✓</span>
-                <p>
-                  Verification code sent. Check your email and enter the code
-                  below on this device.
-                </p>
-              </div>
+          <form
+            className="notification-setup__login-form"
+            onSubmit={handleLogin}
+          >
+            <input
+              className="notification-setup__otp"
+              type="password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              autoComplete="current-password"
+              placeholder="••••••••••••"
+              aria-label="Private access password"
+              autoFocus
+            />
 
-              <input
-                className="notification-setup__otp"
-                value={otp}
-                onChange={(event) =>
-                  setOtp(event.target.value.replace(/\D/g, "").slice(0, 6))
-                }
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                placeholder="000000"
-                aria-label="Email verification code"
-                autoFocus
-              />
-
-              <button
-                className="notification-setup__button"
-                type="submit"
-                disabled={loginState === "verifying" || otp.length < 6}
-              >
-                {loginState === "verifying" ? "VERIFYING..." : "VERIFY CODE"}
-                <span aria-hidden="true">→</span>
-              </button>
-
-              <button
-                className="notification-setup__resend"
-                type="button"
-                onClick={sendLoginCode}
-                disabled={loginState === "sending" || loginState === "verifying"}
-              >
-                SEND A NEW CODE
-              </button>
-            </form>
-          ) : (
             <button
               className="notification-setup__button"
-              type="button"
-              onClick={sendLoginCode}
-              disabled={loginState === "sending"}
+              type="submit"
+              disabled={!password || loginState === "signing_in"}
             >
-              {loginState === "sending"
-                ? "SENDING CODE..."
-                : "SEND ME A LOGIN CODE"}
+              {loginState === "signing_in"
+                ? "CHECKING..."
+                : "UNLOCK NOTIFICATIONS"}
               <span aria-hidden="true">→</span>
             </button>
-          )}
+          </form>
 
           {loginState &&
-            loginState !== "code_sent" &&
-            loginState !== "sending" &&
-            loginState !== "verifying" &&
-            loginState !== "verified" && (
+            loginState !== "signing_in" &&
+            loginState !== "signed_in" && (
               <p className="notification-setup__message">{loginState}</p>
             )}
         </div>
