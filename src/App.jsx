@@ -68,13 +68,7 @@ function App() {
     return <ResetPassword />;
 
   if (path === "/iman-notifications")
-    return (
-      <div className="site-shell">
-        <Navbar />
-        <NotificationSetup />
-        <Footer />
-      </div>
-    );
+    return <NotificationSetup />;
 
   return (
     <div className="site-shell">
