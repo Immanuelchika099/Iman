@@ -216,4 +216,12 @@ function NotificationSetup() {
     );
   }
 
-  return <NotificationDashboard userEmail={userEmail} onSignOut={() => supabase.auth.signOut()} />;
+  return (
+    <NotificationDashboard
+      userEmail={userEmail}
+      onSignOut={() => supabase.auth.signOut()}
+    />
+  );
+}
+
+export default NotificationSetup;
