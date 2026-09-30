@@ -55,7 +55,7 @@ function Navbar(){
   function goTo(id){setOpen(false);if(id==="about"){window.history.pushState({}, "", "/about");window.scrollTo(0,0);window.dispatchEvent(new PopStateEvent("popstate"));return}requestAnimationFrame(()=>{const target=document.getElementById(id);if(!target)return;const top=target.getBoundingClientRect().top+window.scrollY;window.scrollTo({top,behavior:"smooth"})})}
   return <><header ref={nav} className={open?"navbar is-open":"navbar"}>
     <div className="navbar__pill">
-      <button className="navbar__brand" onClick={()=>window.scrollTo({top:0,behavior:"smooth"})}>IMAN</button>
+      <button className="navbar__brand" onClick={()=>{setOpen(false);window.history.pushState({}, "", "/");window.dispatchEvent(new PopStateEvent("popstate"));window.scrollTo({top:0,left:0,behavior:"smooth"})}}>IMAN</button>
       <nav className="navbar__links">{links.map(([num,label,id])=><button key={id} onClick={()=>goTo(id)}>{label}</button>)}</nav>
       <div className="navbar__availability"><i/> AVAILABLE FOR SELECT PROJECTS</div>
       <button className="navbar__menu" onClick={()=>setOpen(v=>!v)} aria-label={open?"Close menu":"Open menu"} aria-expanded={open}><span/><span/></button>
