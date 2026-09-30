@@ -10,30 +10,29 @@ function Navbar(){
   useLayoutEffect(()=>{
     let lastY=0;
     let ticking=false;
-    const threshold=8;
+    const threshold=5;
     const update=(y)=>{
       if(ticking)return;
       ticking=true;
       requestAnimationFrame(()=>{
         const currentY=Math.max(0,y);
-        if(currentY<30){
-          gsap.to(nav.current,{yPercent:0,duration:.45,ease:"power3.out",overwrite:true});
+        if(currentY<40){
+          gsap.to(nav.current,{yPercent:0,opacity:1,duration:.45,ease:"power3.out",overwrite:true});
         }else if(currentY>lastY+threshold&&!open){
-          gsap.to(nav.current,{yPercent:-140,duration:.5,ease:"power3.inOut",overwrite:true});
+          gsap.to(nav.current,{yPercent:-110,opacity:0,duration:.5,ease:"power3.inOut",overwrite:true});
         }else if(currentY<lastY-threshold){
-          gsap.to(nav.current,{yPercent:0,duration:.5,ease:"power3.out",overwrite:true});
+          gsap.to(nav.current,{yPercent:0,opacity:1,duration:.5,ease:"power3.out",overwrite:true});
         }
         lastY=currentY;
         ticking=false;
       });
     };
-    const lenis=window.__imanLenis;
-    const onLenisScroll=({scroll})=>update(scroll);
+    const onLenisScroll=(event)=>update(event.detail?.scroll ?? 0);
     const onWindowScroll=()=>update(window.scrollY);
-    if(lenis)lenis.on("scroll",onLenisScroll);
+    window.addEventListener("iman-scroll",onLenisScroll);
     window.addEventListener("scroll",onWindowScroll,{passive:true});
     return()=>{
-      if(lenis)lenis.off("scroll",onLenisScroll);
+      window.removeEventListener("iman-scroll",onLenisScroll);
       window.removeEventListener("scroll",onWindowScroll);
     };
   },[open]);
