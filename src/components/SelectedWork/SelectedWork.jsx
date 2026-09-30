@@ -63,7 +63,7 @@ function SelectedWork() {
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray("[data-work-card]");
-      const viewport = section.current.querySelector(".work-scroll");
+      const viewport = section.current.querySelector(".selected-work__viewport");
 
       gsap.set(cards, {
         opacity: 0,
@@ -77,14 +77,15 @@ function SelectedWork() {
       });
 
       const getDistance = () =>
-        Math.max(0, track.current.scrollWidth - viewport.clientWidth);
+        Math.max(0, track.current.scrollWidth - viewport.querySelector(".work-scroll").clientWidth);
 
       const timeline = gsap.timeline({
         scrollTrigger: {
           trigger: section.current,
           start: "top top",
           end: () => `+=${getDistance()}`,
-          pin: true,
+          pin: viewport,
+          pinSpacing: true,
           scrub: 1,
           anticipatePin: 1,
           invalidateOnRefresh: true
@@ -170,8 +171,9 @@ function SelectedWork() {
           <a className="github-link" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer" aria-label="IMAN GitHub"><GitHubIcon /></a>
         </div>
 
-        <div className="work-scroll"><div className="work-track" ref={track}>{projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}<a className="all-projects-button" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer">VIEW ALL PROJECTS <span>↗</span></a></div></div>
+        <div className="work-scroll"><div className="work-track" ref={track}>{projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}</div></div>
       </div></div>
+      <a className="all-projects-button" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer">VIEW ALL PROJECTS <span>↗</span></a>
     </section>
   );
 }
