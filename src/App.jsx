@@ -12,6 +12,7 @@ import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import StartProject from "./components/StartProject/StartProject";
 import About from "./components/About/About";
+import NotificationSetup from "./components/NotificationSetup/NotificationSetup";
 import "./App.css";
 function App(){
   const [path,setPath]=useState(window.location.pathname);
@@ -33,6 +34,7 @@ function App(){
   },[loading]);
   if(path==="/start-a-project") return <div className="site-shell"><Navbar/><StartProject/><Footer/></div>;
   if(path==="/about") return <div className="site-shell"><Navbar/><About/><Footer/></div>;
+  if(path==="/iman-notifications") return <div className="site-shell"><Navbar/><NotificationSetup/><Footer/></div>;
   return <div className="site-shell">
     {loading&&<Preloader onComplete={()=>setLoading(false)}/>}
     <Navbar/>
