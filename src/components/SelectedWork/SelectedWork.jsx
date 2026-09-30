@@ -151,16 +151,14 @@ function SelectedWork() {
         />
       </div>
 
-      <div className="section-inner">
+      <div className="selected-work__viewport"><div className="section-inner">
         <div className="work-head">
           <div><span className="section-kicker">SELECTED WORK</span><h2>SELECTED<br /><em>WORK.</em></h2></div>
           <a className="github-link" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer" aria-label="IMAN GitHub"><GitHubIcon /></a>
         </div>
 
-        <div className="work-grid">{projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}</div>
-
-        <a className="all-projects-button" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer">VIEW ALL PROJECTS <span>↗</span></a>
-      </div>
+        <div className="work-scroll"><div className="work-track" ref={track}>{projects.map((project, index) => <ProjectCard key={project.id} project={project} index={index} />)}<a className="all-projects-button" href="https://github.com/Immanuelchika099" target="_blank" rel="noreferrer">VIEW ALL PROJECTS <span>↗</span></a></div></div>
+      </div></div>
     </section>
   );
 }
