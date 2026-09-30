@@ -16,24 +16,6 @@ function NotificationSetup() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    const manifestLink = document.querySelector('link[rel="manifest"]');
-    if (!manifestLink) return;
-
-    const originalManifest = manifestLink.getAttribute("href");
-
-    manifestLink.setAttribute(
-      "href",
-      "/iman-notifications.webmanifest?admin=1"
-    );
-
-    return () => {
-      if (originalManifest) {
-        manifestLink.setAttribute("href", originalManifest);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     let mounted = true;
 
     async function checkAuth() {
