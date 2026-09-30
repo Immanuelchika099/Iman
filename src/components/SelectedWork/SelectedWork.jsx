@@ -62,69 +62,82 @@ function SelectedWork() {
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+      const cards = gsap.utils.toArray("[data-work-card]");
+      const viewport = section.current.querySelector(".work-scroll");
 
-      mm.add("(min-width: 71rem)", () => {
-        const cards = gsap.utils.toArray("[data-work-card]");
-        const distance = () => Math.max(0, track.current.scrollWidth - window.innerWidth);
-
-        gsap.set(cards, { opacity: 0, y: 70, clipPath: "inset(8% 0 4% 0)" });
-        cards.forEach((card) => {
-          gsap.set(card.querySelector("img"), { scale: 1.12 });
-          gsap.set(card.querySelector(".work-card__info"), { y: 24, opacity: 0 });
-        });
-
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            trigger: section.current,
-            start: "top top",
-            end: () => `+=${distance()}`,
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-            invalidateOnRefresh: true
-          }
-        });
-
-        timeline
-          .to(cards, { opacity: 1, y: 0, clipPath: "inset(0% 0 0% 0)", duration: 0.25, stagger: 0.07, ease: "power3.out" }, 0)
-          .to(cards.map((card) => card.querySelector("img")), { scale: 1, duration: 0.3, stagger: 0.07, ease: "power2.out" }, 0)
-          .to(cards.map((card) => card.querySelector(".work-card__info")), { y: 0, opacity: 1, duration: 0.22, stagger: 0.07, ease: "power2.out" }, 0.1)
-          .to(track.current, { x: () => -distance(), duration: 1, ease: "none" }, 0.08);
-
-        return () => timeline.scrollTrigger?.kill();
+      gsap.set(cards, {
+        opacity: 0,
+        y: 70,
+        clipPath: "inset(8% 0 4% 0)"
       });
 
-      mm.add("(max-width: 70.99rem)", () => {
-        const cards = gsap.utils.toArray("[data-work-card]");
-
-        cards.forEach((card) => {
-          const image = card.querySelector("img");
-          const shade = card.querySelector(".work-card__shade");
-          const top = card.querySelector(".work-card__top");
-          const bottom = card.querySelector(".work-card__bottom");
-          const info = card.querySelector(".work-card__info");
-
-          gsap.set(card, { opacity: 1, y: 0, clearProps: "clipPath" });
-          gsap.set(image, { scale: 1.08, yPercent: 4 });
-          gsap.set(shade, { opacity: 0.35 });
-          gsap.set(top, { y: 22, autoAlpha: 0 });
-          gsap.set(bottom, { y: 35 });
-          gsap.set(info, { y: 28, opacity: 0 });
-
-          const intro = gsap.timeline({
-            scrollTrigger: { trigger: card, start: "top 88%", end: "top 38%", scrub: 1.15 }
-          });
-
-          intro
-            .to(card, { y: 0, ease: "power3.out", duration: 1 }, 0)
-            .to(image, { scale: 1.02, yPercent: 0, ease: "power2.out", duration: 1 }, 0)
-            .to(shade, { opacity: 1, ease: "none", duration: 0.8 }, 0)
-            .to(top, { y: 0, autoAlpha: 1, ease: "power3.out", duration: 0.7 }, 0.2)
-            .to(bottom, { y: 0, ease: "power3.out", duration: 0.85 }, 0.12)
-            .to(info, { y: 0, opacity: 1, ease: "power2.out", duration: 0.8 }, 0.3);
-        });
+      cards.forEach((card) => {
+        gsap.set(card.querySelector("img"), { scale: 1.12 });
+        gsap.set(card.querySelector(".work-card__info"), { y: 24, opacity: 0 });
       });
+
+      const getDistance = () =>
+        Math.max(0, track.current.scrollWidth - viewport.clientWidth);
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: section.current,
+          start: "top top",
+          end: () => `+=${getDistance()}`,
+          pin: true,
+          scrub: 1,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      });
+
+      timeline
+        .to(
+          cards,
+          {
+            opacity: 1,
+            y: 0,
+            clipPath: "inset(0% 0 0% 0)",
+            duration: 0.22,
+            stagger: 0.06,
+            ease: "power3.out"
+          },
+          0
+        )
+        .to(
+          cards.map((card) => card.querySelector("img")),
+          {
+            scale: 1,
+            duration: 0.28,
+            stagger: 0.06,
+            ease: "power2.out"
+          },
+          0
+        )
+        .to(
+          cards.map((card) => card.querySelector(".work-card__info")),
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.2,
+            stagger: 0.06,
+            ease: "power2.out"
+          },
+          0.08
+        )
+        .to(
+          track.current,
+          {
+            x: () => -getDistance(),
+            duration: 1,
+            ease: "none"
+          },
+          0.06
+        );
+
+      ScrollTrigger.refresh();
+
+      return () => timeline.scrollTrigger?.kill();
     }, section);
 
     return () => ctx.revert();
