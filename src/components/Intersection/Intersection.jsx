@@ -72,7 +72,7 @@ function Intersection(){
 
   return <section className="intersection" ref={root}>
     <div className="intersection__visual" ref={stage}>
-      <div className="intersection__intro"><span>APPROACH / 01</span><h2>I BUILD DIGITAL EXPERIENCES AT THE <em>INTERSECTION</em> OF</h2></div>
+      <div className="intersection__intro"><h2>I BUILD DIGITAL EXPERIENCES AT THE <em>INTERSECTION</em> OF</h2></div>
       <div className="intersection__stage">
         <div className="intersection__circle intersection__circle--one"><span className="intersection__icon">{icons[0]}</span><span className="intersection__circle-label">DESIGN</span></div>
         <div className="intersection__circle intersection__circle--two"><span className="intersection__icon">{icons[1]}</span><span className="intersection__circle-label">TECHNOLOGY</span></div>
